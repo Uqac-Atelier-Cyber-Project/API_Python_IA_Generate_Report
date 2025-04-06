@@ -33,7 +33,7 @@ def process_request(prompt):
 @app.post("/generate")
 async def generate_text(request: PromptRequest):
     try:
-        logger.info("Received request with prompt: %s", request.prompt)
+        logger.debug("Received request with prompt: %s", request.prompt)
         prompt = (
                 """
                 Tu es un analyste en cybersécurité. Tu reçois des résultats issus de plusieurs modules d’analyse de sécurité automatisés. Ces modules peuvent inclure :
