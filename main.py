@@ -26,6 +26,7 @@ def process_request(prompt):
     logger.info("Processing request in a separate process")
     response = ollama.chat(model="deepseek-r1:14b", messages=[{"role": "user", "content": prompt}])
     cleaned_response = re.sub(r'<think>.*?</think>', '', response['message']['content'], flags=re.DOTALL)
+    cleaned_response = re.sub(r'```(?:markdown)?\n?(.*?)```', r'\1', response, flags=re.DOTALL)
     logger.info("Finished processing request")
     return cleaned_response
 
@@ -43,15 +44,17 @@ async def generate_text(request: PromptRequest):
     - Tentatives de bruteforce WiFi
     - Analyse de vulnérabilités connues (CVE)
     
+    Si une de ces analyse n'est pas fait, tu ne dois pas en parler. Tu dis juste qu'aucune analyse n'a été faite.
+    
     Ton objectif est de générer un **rapport d’analyse complet en syntaxe Markdown**, permettant de détecter les problèmes potentiels, d’en évaluer la criticité et de formuler des commentaires pertinents.
     
     ## Instructions :
     
     1. Analyse chaque module indépendamment, en créant une section pour chacun :
-       - `## Scan de ports`
-       - `## Bruteforce SSH`
-       - `## Bruteforce WiFi`
-       - `## Analyse CVE`
+       - `## Scan de ports` (en traitant l'ensemble des ports ouverts et des services associés, les résultat sont sous forme  de JSON)
+       - `## Bruteforce SSH` (Les résultat sont sous forme de JSON)
+       - `## Bruteforce WiFi`(Les résultat sont sous forme de JSON, si le json est retourné avec des info et que le psk est rempli c'est que le mot de passe a été trouvé a l'aide d'une attaque de bruteforce ce qui n'est pas bien) 
+       - `## Analyse CVE` (les résultat sont fournit sous forme de tableau)
     
     2. Pour chaque section, réalise :
        - Un résumé des éléments détectés
@@ -66,7 +69,7 @@ async def generate_text(request: PromptRequest):
        - Commentaire ou recommandation
     
     ## Format de sortie :
-    Le rapport doit être entièrement rédigé en **Markdown** avec une mise en forme claire, structurée et professionnelle.
+    Le rapport doit être entièrement rédigé en **Markdown** avec une mise en forme claire, structurée et professionnelle en français. en ne met surtout pas ```markdown ... ``` au début et à la fin du texte.
     
     Voici les données à analyser (au format JSON) :
                 """
