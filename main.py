@@ -69,7 +69,7 @@ async def generate_text(request: PromptRequest):
        - Commentaire ou recommandation
     
     ## Format de sortie :
-    Le rapport doit être entièrement rédigé en **Markdown** avec une mise en forme claire, structurée et professionnelle en français. en ne met surtout pas ```markdown ... ``` au début et à la fin du texte.
+    Le rapport doit être entièrement rédigé en **Markdown** avec une mise en forme claire, structurée et professionnelle en français. Ne fais pas apparaitre ```markdown ... ``` au début et à la fin du texte renvoyé.
     
     Voici les données à analyser (au format JSON) :
                 """
