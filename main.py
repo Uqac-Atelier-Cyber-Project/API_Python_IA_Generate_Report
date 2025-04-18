@@ -26,7 +26,6 @@ def process_request(prompt):
     logger.info("Processing request in a separate process")
     response = ollama.chat(model="deepseek-r1:14b", messages=[{"role": "user", "content": prompt}])
     cleaned_response = re.sub(r'<think>.*?</think>', '', response['message']['content'], flags=re.DOTALL)
-    cleaned_response = re.sub(r'```(?:markdown)?\n?(.*?)```', r'\1', response, flags=re.DOTALL)
     logger.info("Finished processing request")
     return cleaned_response
 
